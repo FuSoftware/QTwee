@@ -18,11 +18,14 @@ public:
     void refreshMetaData();
 
     QHash<QString, QString> getMetaData();
-    QString getMetaDataItem(QString key);
+    QString getMetaDataItem(QString key) const;
 
-    int getPassagesCount();
+    int getPassagesCount() const;
     bool hasPassage(QString name);
     Passage* getPassage(QString name);
+
+    QString getName() const;
+    QString getIfid() const;
 
 private:
     QString name;

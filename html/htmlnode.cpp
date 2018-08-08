@@ -1,27 +1,27 @@
 #include "htmlnode.h"
 #include <sstream>
 
-HTMLNode::HTMLNode(std::string tag)
+HTMLNode::HTMLNode(QString tag)
 {
     this->setTag(tag);
 }
 
-void HTMLNode::setAttribute(std::string name, std::string content)
+void HTMLNode::setAttribute(QString name, QString content)
 {
-    this->attributes.emplace(name, content);
+    this->attributes.insert(name, content);
 }
 
-std::string HTMLNode::getAttribute(std::string name)
+QString HTMLNode::getAttribute(QString name)
 {
     return this->attributes[name];
 }
 
-void HTMLNode::setText(std::string text)
+void HTMLNode::setText(QString text)
 {
     this->text = text;
 }
 
-void HTMLNode::setTag(std::string tag)
+void HTMLNode::setTag(QString tag)
 {
     this->tag = tag;
 }
@@ -31,47 +31,45 @@ void HTMLNode::addChild(HTMLNode* node)
     this->children.push_back(node);
 }
 
-std::string HTMLNode::printAttributes()
+QString HTMLNode::getXML(QXmlStreamWriter *writer)
 {
-    if(!this->attributes.empty())
+    bool root = false;
+    QString output;
+    if(!writer)
     {
-        std::ostringstream oss;
-        oss << " ";
-        for(auto kv : this->attributes)
-        {
-            oss << kv.first << "\"" << kv.second << "\" ";
-        }
-        return oss.str();
+        root = true;
+        writer = new QXmlStreamWriter(&output);
+        writer->writeStartDocument();
     }
-    else
-    {
-        return "";
-    }
-}
-
-std::string HTMLNode::toString()
-{
-    std::ostringstream oss;
 
     if(this->children.empty() && this->text == "")
     {
         //Empty tag
-        oss << "<" << this->tag << "/>";
+        writer->writeEmptyElement(this->tag);
     }
     else
     {
-        //Tag has some content
-        oss << "<" << this->tag << this->printAttributes() << ">";
+        //Tag has text
+        writer->writeStartElement(this->tag);
 
-        for(auto child : this->children)
+        for(QString k : this->attributes.keys())
         {
-            oss << child->toString();
+            writer->writeAttribute(k, this->attributes[k]);
         }
 
-        oss << this->text;
+        for(HTMLNode* child : this->children)
+        {
+            child->getXML(writer);
+        }
 
-        oss << "</" << this->tag << ">";
+        writer->writeCharacters(this->text);
+        writer->writeEndElement();
     }
 
-    return oss.str();
+    if(root)
+    {
+        writer->writeEndDocument();
+    }
+
+    return output;
 }

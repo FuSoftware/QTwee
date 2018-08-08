@@ -32,3 +32,8 @@ QStringList Passage::getLines()
 {
     return this->getText().split("\n");
 }
+
+bool Passage::hasTag(QString tag)
+{
+    return this->tags.contains(tag);
+}

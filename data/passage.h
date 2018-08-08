@@ -13,6 +13,7 @@ public:
     QStringList getLines();
     unsigned int getCharacterCount();
     void addLine(QString line);
+    bool hasTag(QString tag);
 
 
 private:

@@ -1,6 +1,8 @@
 #include "tests.h"
 #include "data/story.h"
 
+#include <QDebug>
+
 Tests::Tests()
 {
 
@@ -36,10 +38,12 @@ void Tests::metadataParsing(QString file)
 
 void Tests::testHTML(QString file)
 {
-    /*
+
     HTMLNode *html = new HTMLNode("html");
     HTMLNode *head = new HTMLNode("head");
     HTMLNode *body = new HTMLNode("body");
+    HTMLNode *meta = new HTMLNode("meta");
+    meta->setAttribute("charset", "UTF-8");
 
     HTMLNode *title = new HTMLNode("title");
     title->setText("Test Page");
@@ -51,11 +55,25 @@ void Tests::testHTML(QString file)
     html->addChild(head);
     html->addChild(body);
     head->addChild(title);
+    head->addChild(meta);
     body->addChild(h1);
 
-    QString data = html->toString();
-    std::ofstream out(file);
-    out << data;
-    out.close();
-    */
+    QFile f(file);
+    if (!f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        std::cerr << "Could not open file " << file.toStdString() << std::endl;
+        return;
+    }
+    QXmlStreamWriter *w = new QXmlStreamWriter(&f);
+    html->getXML(w);
+    w->writeEndDocument();
+    f.close();
+}
+
+void Tests::format(QString file)
+{
+    Format *f = new Format();
+    f->loadFile(file);
+
+    qInfo() << f->getName() << f->getVersion() << f->getAuthor();
 }

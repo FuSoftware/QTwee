@@ -1,33 +1,32 @@
 #ifndef HTMLNODE_H
 #define HTMLNODE_H
 
-#include <string>
-#include <vector>
-#include <map>
-#include <unordered_map>
+#include <QString>
+#include <QVector>
+#include <QHash>
+#include <QXmlStreamWriter>
 
 class HTMLNode
 {
 public:
-    HTMLNode(std::string tag);
+    HTMLNode(QString tag);
 
-    void setAttribute(std::string name, std::string text);
-    std::string getAttribute(std::string name);
+    void setAttribute(QString name, QString text);
+    QString getAttribute(QString name);
 
-    void setTag(std::string tag);
-    void setText(std::string text);
+    void setTag(QString tag);
+    void setText(QString text);
 
     void addChild(HTMLNode* node);
 
-    std::string toString();
-    std::string printAttributes();
+    QString getXML(QXmlStreamWriter *writer = 0);
 
 private:
-    std::string tag;
-    std::unordered_map<std::string, std::string> attributes;
-    std::string text;
+    QString tag;
+    QHash<QString, QString> attributes;
+    QString text;
 
-    std::vector<HTMLNode*> children;
+    QVector<HTMLNode*> children;
 
 };
 

@@ -19,7 +19,7 @@ void Story::addPassages(QVector<Passage*> p)
     }
 }
 
-int Story::getPassagesCount()
+int Story::getPassagesCount() const
 {
     return this->passages.size();
 }
@@ -69,7 +69,17 @@ QHash<QString, QString> Story::getMetaData()
     return this->metadata;
 }
 
-QString Story::getMetaDataItem(QString key)
+QString Story::getMetaDataItem(QString key) const
 {
     return this->metadata[key];
+}
+
+QString Story::getName() const
+{
+    return this->name;
+}
+
+QString Story::getIfid() const
+{
+    return this->ifid;
 }

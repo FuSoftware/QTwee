@@ -1,18 +1,24 @@
 #ifndef STORYBUILDER_H
 #define STORYBUILDER_H
 
-#include <string>
-#include <vector>
+#include <QString>
+#include <QVector>
 
+class HTMLNode;
 class Story;
 class StoryBuilder
 {
 public:
     StoryBuilder(Story *story);
 
-    void compile(std::string file);
+    void compile(QString file);
+    HTMLNode* getHtml();
 
 private:
+    Story* story;
+
+    HTMLNode* buildBody();
+    HTMLNode* buildHead();
 
 };
 
