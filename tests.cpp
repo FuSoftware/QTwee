@@ -102,8 +102,24 @@ void Tests::projectScanner(QStringList paths)
 {
     ProjectScanner p(paths);
 
-    qDebug() << "Twee Files :" << p.getFiles("tw");
-    qDebug() << "JS Files :" << p.getFiles("js");
-    qDebug() << "CSS Files :" << p.getFiles("css");
-    qDebug() << "Misc Files :" << p.getFiles("misc");
+    qDebug() << "Twee Files :" << p.getTweeFiles().count();
+    for(QFileInfo f : p.getTweeFiles())
+        qDebug() << "    " << f.absoluteFilePath();
+    qDebug() << "\n";
+
+    qDebug() << "JS Files :" << p.getJsFiles().count();
+    for(QFileInfo f : p.getJsFiles())
+        qDebug() << "    " << f.absoluteFilePath();
+    qDebug() << "\n";
+
+    qDebug() << "CSS Files :" << p.getCssFiles().count();
+    for(QFileInfo f : p.getCssFiles())
+        qDebug() << "    " << f.absoluteFilePath();
+    qDebug() << "\n";
+
+    qDebug() << "Misc Files :" << p.getMiscFiles().count();
+    for(QFileInfo f : p.getMiscFiles())
+        qDebug() << "    " << f.absoluteFilePath();
+    qDebug() << "\n";
+
 }

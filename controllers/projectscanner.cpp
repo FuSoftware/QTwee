@@ -3,8 +3,12 @@
 
 ProjectScanner::ProjectScanner(QStringList paths)
 {
-    this->scan(paths);
     this->setupCategories();
+
+    if(!paths.isEmpty())
+    {
+         this->scan(paths);
+    }
 }
 
 void ProjectScanner::setupCategories()
@@ -37,7 +41,7 @@ void ProjectScanner::scan(QString path)
 void ProjectScanner::scan(QFileInfo file)
 {
     QString path = file.absoluteFilePath();
-    if(this->processed.contains(path))
+    if(!this->processed.contains(path))
     {
         this->processed.append(path);
 
@@ -49,7 +53,13 @@ void ProjectScanner::scan(QFileInfo file)
             }
             else if(this->isFolder(file))
             {
-                this->scan(file);
+                QDir d = QDir(file.absoluteFilePath());
+                d.setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+
+                for(QFileInfo f : d.entryInfoList())
+                {
+                    this->scan(f);
+                }
             }
             else
             {
@@ -76,6 +86,31 @@ void ProjectScanner::addFile(QFileInfo file)
 QVector<QFileInfo> ProjectScanner::getFiles(QString category)
 {
     return this->categories[category].files;
+}
+
+QVector<QFileInfo> ProjectScanner::getTweeFiles()
+{
+    return this->getFiles("twee");
+}
+
+QVector<QFileInfo> ProjectScanner::getJsFiles()
+{
+    return this->getFiles("js");
+}
+
+QVector<QFileInfo> ProjectScanner::getCssFiles()
+{
+    return this->getFiles("css");
+}
+
+QVector<QFileInfo> ProjectScanner::getImageFiles()
+{
+    return this->getFiles("img");
+}
+
+QVector<QFileInfo> ProjectScanner::getMiscFiles()
+{
+    return this->getFiles("misc");
 }
 
 bool ProjectScanner::exists(QFileInfo file)

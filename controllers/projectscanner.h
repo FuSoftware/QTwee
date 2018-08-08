@@ -36,6 +36,11 @@ public:
     void addFile(QFileInfo path);
 
     QVector<QFileInfo> getFiles(QString category);
+    QVector<QFileInfo> getTweeFiles();
+    QVector<QFileInfo> getJsFiles();
+    QVector<QFileInfo> getCssFiles();
+    QVector<QFileInfo> getImageFiles();
+    QVector<QFileInfo> getMiscFiles();
 
     bool exists(QFileInfo file);
     bool isFolder(QFileInfo file);
