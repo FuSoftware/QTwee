@@ -6,35 +6,37 @@ Tests::Tests()
 
 }
 
-void Tests::tweeParsing(std::string file)
+void Tests::tweeParsing(QString file)
 {
     TweeParser *p = new TweeParser();
-    std::vector<Passage*> passages = p->parseFile(file);
+    QVector<Passage*> passages = p->parseFile(file);
 
-    for(int i=0;i<passages.size();i++){
-        std::cout << passages[i]->getName() << " : " << passages[i]->getCharacterCount() << std::endl;
+    for(int i=0;i<passages.size();i++)
+    {
+        std::cout << passages[i]->getName().toStdString() << " : " << passages[i]->getCharacterCount() << std::endl;
     }
 }
 
-void Tests::metadataParsing(std::string file)
+void Tests::metadataParsing(QString file)
 {
     TweeParser *p = new TweeParser();
-    std::vector<Passage*> passages = p->parseFile(file);
+    QVector<Passage*> passages = p->parseFile(file);
 
     Story *s = new Story();
     s->addPassages(passages);
     s->refreshMetaData();
 
-    std::unordered_map<std::string, std::string> metadata = s->getMetaData();
+    QHash<QString, QString> metadata = s->getMetaData();
 
-    for(auto kv : metadata)
+    for(auto k : metadata.keys())
     {
-        std::cout << kv.first << " : " << kv.second << std::endl;
+        std::cout << k.toStdString() << " : " << metadata[k].toStdString() << std::endl;
     }
 }
 
-void Tests::testHTML(std::string file)
+void Tests::testHTML(QString file)
 {
+    /*
     HTMLNode *html = new HTMLNode("html");
     HTMLNode *head = new HTMLNode("head");
     HTMLNode *body = new HTMLNode("body");
@@ -51,8 +53,9 @@ void Tests::testHTML(std::string file)
     head->addChild(title);
     body->addChild(h1);
 
-    std::string data = html->toString();
+    QString data = html->toString();
     std::ofstream out(file);
     out << data;
     out.close();
+    */
 }

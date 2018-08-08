@@ -1,26 +1,27 @@
 #include "passage.h"
 #include "utils.h"
 
-Passage::Passage(std::string name, std::string text, std::vector<std::string> tags)
+Passage::Passage(QString name, QString text, QStringList tags)
 {
     this->name = name;
     this->text = text;
     this->tags = tags;
 }
 
-void Passage::addLine(std::string line)
+void Passage::addLine(QString line)
 {
-    this->text += line + "\n";
+    this->text.append("\n");
+    this->text.append(line);
 }
 
-std::string Passage::getName()
+QString Passage::getName()
 {
     return this->name;
 }
 
-std::string Passage::getText()
+QString Passage::getText() const
 {
-    return this->text;
+    return this->text.trimmed();
 }
 
 unsigned int Passage::getCharacterCount()
@@ -28,7 +29,7 @@ unsigned int Passage::getCharacterCount()
     return this->text.length();
 }
 
-std::vector<std::string> Passage::getLines()
+QStringList Passage::getLines()
 {
-    return Utils::split(this->text,'\n');
+    return this->text.split("\n");
 }

@@ -1,25 +1,25 @@
 #ifndef PASSAGE_H
 #define PASSAGE_H
 
-#include <vector>
-#include <string>
+#include <QVector>
+#include <QString>
 
 class Passage
 {
 public:
-    Passage(std::string name, std::string text = "", std::vector<std::string> tags = std::vector<std::string>());
-    std::string getName();
-    std::string getText();
-    std::vector<std::string> getLines();
+    Passage(QString name, QString text = "", QStringList tags = QStringList());
+    QString getName();
+    QString getText() const;
+    QStringList getLines();
     unsigned int getCharacterCount();
-    void addLine(std::string line);
+    void addLine(QString line);
 
 
 private:
-    std::vector<Passage*> linkedTo;
-    std::vector<std::string> tags;
-    std::string name;
-    std::string text;
+    QVector<Passage*> linkedTo;
+    QStringList tags;
+    QString name;
+    QString text;
 };
 
 #endif // PASSAGE_H

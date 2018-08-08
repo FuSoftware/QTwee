@@ -1,6 +1,5 @@
 #include "story.h"
 #include "passage.h"
-#include "utils.h"
 
 Story::Story()
 {
@@ -9,10 +8,10 @@ Story::Story()
 
 void Story::addPassage(Passage* p)
 {
-    this->passages.emplace(p->getName(),p);
+    this->passages.insert(p->getName(),p);
 }
 
-void Story::addPassages(std::vector<Passage*> p)
+void Story::addPassages(QVector<Passage*> p)
 {
     for(int i=0;i<p.size();i++)
     {
@@ -20,14 +19,13 @@ void Story::addPassages(std::vector<Passage*> p)
     }
 }
 
-
 int Story::getPassagesCount()
 {
     return this->passages.size();
 }
 
 
-bool Story::hasPassage(std::string name)
+bool Story::hasPassage(QString name)
 {
     return this->passages.count(name);
 }
@@ -49,17 +47,20 @@ void Story::refreshMetaData()
         this->metadata.clear();
 
         Passage *p = this->getPassage("StorySettings");
-        std::vector<std::string> lines = p->getLines();
+        QStringList lines = p->getLines();
 
-        for(auto line : lines)
+        for(QString line : lines)
         {
-            int c = line.find(":");
-            this->metadata.emplace(line.substr(0,c), line.substr(c+1, line.size()-c));
+            if(line.contains(":"))
+            {
+                QStringList l = line.split(":");
+                this->metadata.insert(l[0],l[1]);
+            }
         }
     }
 }
 
-Passage* Story::getPassage(std::string name)
+Passage* Story::getPassage(QString name)
 {
     if(this->hasPassage(name))
     {
@@ -71,12 +72,12 @@ Passage* Story::getPassage(std::string name)
     }
 }
 
-std::unordered_map<std::string, std::string> Story::getMetaData()
+QHash<QString, QString> Story::getMetaData()
 {
     return this->metadata;
 }
 
-std::string Story::getMetaDataItem(std::string key)
+QString Story::getMetaDataItem(QString key)
 {
     return this->metadata[key];
 }

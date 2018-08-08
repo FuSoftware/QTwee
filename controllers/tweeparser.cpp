@@ -1,36 +1,24 @@
 #include "tweeparser.h"
 #include "data/passage.h"
-#include "utils.h"
-
-#include <fstream>
 #include <iostream>
-#include <sstream>
-#include <algorithm>
 
 TweeParser::TweeParser()
 {
-    this->reg_head = std::regex(this->pat_head);
-    this->reg_head_tags = std::regex(this->pat_head_tags);
+    this->reg_head.setPattern(this->pat_head);
+    this->reg_head_tags.setPattern(this->pat_head_tags);
 }
 
-std::vector<Passage*> TweeParser::parseFile(std::string file)
+QVector<Passage*> TweeParser::parseFile(QFile &file)
 {
-    if(!Utils::file_exists(file))
-    {
-        //If the file doesn't exist
-        std::cerr << "File " << file << " not found." << std::endl;
-        return std::vector<Passage*>();
-    }
-
-    std::ifstream ifs(file);
-    std::vector<Passage*> passages;
-    this->current_file = file;
+    QTextStream in(&file);
+    QVector<Passage*> passages;
+    this->current_file = file.fileName();
     this->current_line = 1;
-    std::string line;
 
-    while(std::getline( ifs, line ))
+    while(!in.atEnd())
     {
-        if(line.find("::") == 0)
+        QString line = in.readLine();
+        if(line.startsWith("::"))
         {
             //If the line is a header
             passages.push_back(passageFromHeader(line));
@@ -43,59 +31,63 @@ std::vector<Passage*> TweeParser::parseFile(std::string file)
 
         this->current_line++;
     }
-
-    ifs.close();
     this->current_line = -1;
     this->current_file = "";
     return passages;
 }
 
-std::vector<Passage*> TweeParser::parseFiles(std::vector<std::string> files)
+QVector<Passage*> TweeParser::parseFile(QString file)
 {
-    std::vector<Passage*> passages;
-
-    for(int i=0;i<files.size();i++)
+    QFile f(file);
+    if (!f.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        std::vector<Passage*> p = parseFile(files[i]);
-        passages.reserve( passages.size() + p.size() );
-        passages.insert( passages.end(), p.begin(), p.end() );
+        std::cerr << "Could not open file " << file.toStdString() << std::endl;
+        return QVector<Passage*>();
     }
-
-    return passages;
+    QVector<Passage*> p = this->parseFile(f);
+    f.close();
+    return p;
 }
 
-Passage* TweeParser::passageFromHeader(std::string line)
+QVector<Passage*> TweeParser::parseFiles(QStringList files)
 {
-    std::string name;
-    std::vector<std::string> tags;
-    std::smatch m;
-    if(std::regex_search (line, m, reg_head_tags))
+    QVector<Passage*> p;
+    for(QString f : files)
+    {
+        QVector<Passage*> p_temp = this->parseFile(f);
+        for(Passage* pass : p_temp)
+        {
+            p.append(pass);
+        }
+    }
+    return p;
+}
+
+Passage* TweeParser::passageFromHeader(QString line)
+{
+    QString name;
+    QStringList tags;
+
+    QRegularExpressionMatch m_head = this->reg_head.match(line);
+    QRegularExpressionMatch m_head_tags = this->reg_head_tags.match(line);
+
+    if(m_head_tags.hasMatch())
     {
         //If the header contains tags
-        name = m[1];
-        tags = parseTags(m[2]);
+        name = m_head_tags.captured(1);
+        tags = m_head_tags.captured(2).split(" ");
     }
-    else if(std::regex_search (line, m, reg_head))
+    else if(m_head.hasMatch())
     {
         //If the header does not contain tags
-        name = m[1];
+        name = m_head.captured(1);
     }
     else
     {
         //If the header failed parsing
-        std::cerr << "Error parsing passage header on line " << this->current_line << " in file " << this->current_file << std::endl;
+        std::cerr << "Error parsing passage header on line " << this->current_line << " in file " << this->current_file.toStdString() << std::endl;
         return nullptr;
     }
 
     return new Passage(name, "", tags);
-}
-
-std::vector<std::string> TweeParser::parseTags(std::string taglist)
-{
-    std::istringstream iss(taglist);
-    std::vector<std::string> tokens;
-    std::copy(std::istream_iterator<std::string>(iss),
-         std::istream_iterator<std::string>(),
-         std::back_inserter(tokens));
-    return tokens;
 }

@@ -1,10 +1,11 @@
 #ifndef TESTS_H
 #define TESTS_H
 
-#include <string>
-#include <vector>
+#include <QString>
+#include <QVector>
+#include <QFile>
+#include <QHash>
 #include <iostream>
-#include <fstream>
 
 #include "controllers/tweeparser.h"
 #include "data/passage.h"
@@ -15,9 +16,9 @@ class Tests
 public:
     Tests();
 
-    static void tweeParsing(std::string file);
-    static void metadataParsing(std::string file);
-    static void testHTML(std::string file);
+    static void tweeParsing(QString file);
+    static void metadataParsing(QString file);
+    static void testHTML(QString file);
 };
 
 #endif // TESTS_H

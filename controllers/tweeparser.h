@@ -1,9 +1,11 @@
 #ifndef TWEEPARSER_H
 #define TWEEPARSER_H
 
-#include <string>
-#include <vector>
-#include <regex>
+#include <QString>
+#include <QVector>
+#include <QFile>
+#include <QTextStream>
+#include <QRegularExpression>
 
 class Passage;
 class TweeParser
@@ -11,20 +13,20 @@ class TweeParser
 public:
     TweeParser();
 
-    std::vector<Passage*> parseFile(std::string file);
-    std::vector<Passage*> parseFiles(std::vector<std::string> files);
+    QVector<Passage*> parseFile(QFile &file);
+    QVector<Passage*> parseFile(QString file);
+    QVector<Passage*> parseFiles(QStringList files);
 
-    Passage* passageFromHeader(std::string line);
-    std::vector<std::string> parseTags(std::string taglist);
+    Passage* passageFromHeader(QString line);
 
 private:
     int current_line = -1;
-    std::string current_file;
+    QString current_file;
 
-    std::string pat_head_tags = "::(.+)\\[(.+)\\]";
-    std::string pat_head = "::(.+)";
-    std::regex reg_head;
-    std::regex reg_head_tags;
+    QString pat_head_tags = "::(.+)\\[(.+)\\]";
+    QString pat_head = "::(.+)";
+    QRegularExpression reg_head;
+    QRegularExpression reg_head_tags;
 };
 
 #endif // TWEEPARSER_H
