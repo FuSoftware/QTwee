@@ -1,5 +1,6 @@
 #include "tests.h"
 #include "data/story.h"
+#include "controllers/projectscanner.h"
 
 #include <QDebug>
 
@@ -76,4 +77,33 @@ void Tests::format(QString file)
     f->loadFile(file);
 
     qInfo() << f->getName() << f->getVersion() << f->getAuthor();
+}
+
+void Tests::parser(int argc, char *argv[])
+{
+    QStringList l;
+    for(int i=0; i< argc; i++)
+    {
+        l << QString(argv[i]);
+    }
+    parser(l);
+}
+
+void Tests::parser(QStringList l)
+{
+    CommandLineParser p(l);
+
+    qDebug() << "o" << p.hasHtmlOutput() << p.getHtmlOutput();
+    qDebug() << "s" << p.hasSource() << p.getSource();
+    qDebug() << "f" << p.hasStoryFormat() << p.getStoryFormat();
+}
+
+void Tests::projectScanner(QStringList paths)
+{
+    ProjectScanner p(paths);
+
+    qDebug() << "Twee Files :" << p.getFiles("tw");
+    qDebug() << "JS Files :" << p.getFiles("js");
+    qDebug() << "CSS Files :" << p.getFiles("css");
+    qDebug() << "Misc Files :" << p.getFiles("misc");
 }

@@ -12,7 +12,7 @@ SOURCES += \
     controllers/tweeparser.cpp \
     tests.cpp \
     html/htmlnode.cpp \
-    controllers/storybuilder.cpp
+    controllers/storybuilder.cpp \
     controllers/commandlineparser.cpp \
     controllers/projectscanner.cpp
 
@@ -23,6 +23,6 @@ HEADERS += \
     controllers/tweeparser.h \
     tests.h \
     html/htmlnode.h \
-    controllers/storybuilder.h
+    controllers/storybuilder.h \
     controllers/commandlineparser.h \
     controllers/projectscanner.h
