@@ -7,11 +7,13 @@
 class Passage
 {
 public:
-    Passage(std::string name, std::string text, std::vector<std::string> tags = std::vector<std::string>());
+    Passage(std::string name, std::string text = "", std::vector<std::string> tags = std::vector<std::string>());
     std::string getName();
+    std::string getText();
+    std::vector<std::string> getLines();
     unsigned int getCharacterCount();
-
     void addLine(std::string line);
+
 
 private:
     std::vector<Passage*> linkedTo;

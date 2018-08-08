@@ -4,10 +4,11 @@
 #include <string>
 #include <vector>
 
+class Story;
 class StoryBuilder
 {
 public:
-    StoryBuilder();
+    StoryBuilder(Story *story);
 
     void compile(std::string file);
 

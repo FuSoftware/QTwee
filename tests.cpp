@@ -1,4 +1,5 @@
 #include "tests.h"
+#include "data/story.h"
 
 Tests::Tests()
 {
@@ -12,6 +13,23 @@ void Tests::tweeParsing(std::string file)
 
     for(int i=0;i<passages.size();i++){
         std::cout << passages[i]->getName() << " : " << passages[i]->getCharacterCount() << std::endl;
+    }
+}
+
+void Tests::metadataParsing(std::string file)
+{
+    TweeParser *p = new TweeParser();
+    std::vector<Passage*> passages = p->parseFile(file);
+
+    Story *s = new Story();
+    s->addPassages(passages);
+    s->refreshMetaData();
+
+    std::unordered_map<std::string, std::string> metadata = s->getMetaData();
+
+    for(auto kv : metadata)
+    {
+        std::cout << kv.first << " : " << kv.second << std::endl;
     }
 }
 

@@ -16,6 +16,7 @@ public:
     Tests();
 
     static void tweeParsing(std::string file);
+    static void metadataParsing(std::string file);
     static void testHTML(std::string file);
 };
 

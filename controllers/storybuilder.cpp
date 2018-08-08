@@ -1,6 +1,6 @@
 #include "storybuilder.h"
 
-StoryBuilder::StoryBuilder()
+StoryBuilder::StoryBuilder(Story *story)
 {
 
 }

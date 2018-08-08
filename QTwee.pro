@@ -6,7 +6,6 @@ CONFIG -= qt
 SOURCES += \
         main.cpp \
     data/story.cpp \
-    data/htmlfile.cpp \
     data/passage.cpp \
     data/format.cpp \
     controllers/tweeparser.cpp \
@@ -17,7 +16,6 @@ SOURCES += \
 
 HEADERS += \
     data/story.h \
-    data/htmlfile.h \
     data/passage.h \
     data/format.h \
     controllers/tweeparser.h \
