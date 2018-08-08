@@ -13,6 +13,7 @@ SOURCES += \
     tests.cpp \
     html/htmlnode.cpp \
     controllers/storybuilder.cpp
+    controllers/commandlineparser.cpp \
     controllers/projectscanner.cpp
 
 HEADERS += \
@@ -23,4 +24,5 @@ HEADERS += \
     tests.h \
     html/htmlnode.h \
     controllers/storybuilder.h
+    controllers/commandlineparser.h \
     controllers/projectscanner.h
