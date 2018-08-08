@@ -1,5 +1,4 @@
 #include "passage.h"
-#include "utils.h"
 
 Passage::Passage(QString name, QString text, QStringList tags)
 {
@@ -31,5 +30,5 @@ unsigned int Passage::getCharacterCount()
 
 QStringList Passage::getLines()
 {
-    return this->text.split("\n");
+    return this->getText().split("\n");
 }

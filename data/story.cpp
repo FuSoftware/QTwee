@@ -24,7 +24,6 @@ int Story::getPassagesCount()
     return this->passages.size();
 }
 
-
 bool Story::hasPassage(QString name)
 {
     return this->passages.count(name);
@@ -62,14 +61,7 @@ void Story::refreshMetaData()
 
 Passage* Story::getPassage(QString name)
 {
-    if(this->hasPassage(name))
-    {
-        return this->passages[name];
-    }
-    else
-    {
-        return nullptr;
-    }
+    return this->hasPassage(name) ? this->passages[name] : nullptr;
 }
 
 QHash<QString, QString> Story::getMetaData()
